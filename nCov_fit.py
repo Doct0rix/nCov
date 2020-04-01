@@ -1,6 +1,11 @@
 import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import numpy as np
+
+from lxml import html
+import requests
+import datetime
+
 days = 150
 deathrate = .0175
 
@@ -9,6 +14,24 @@ def func(x, a, b, c):
     
 	 #return np.array(a) * np.exp(np.array(b) * x) + np.array(c)
 	 return a * x**2 + b * x + c
+
+page = requests.get('https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html')
+tree = html.fromstring(page.content)
+
+total_cases_web = tree.xpath("//text()[contains(.,'Total cases:')]")
+total_cases_web[0] = total_cases_web[0].replace('Total cases: ', '')
+total_cases_web[0] = total_cases_web[0].replace(',', '')
+total_cases = int(total_cases_web[0])
+
+f = open("cases.data", "r")
+new = f.readline()
+newcases = [int(x) for x in new.split(",")]
+total = f.readline()
+totalcases = [int(x) for x in total.split(",")]
+f.close()
+
+print(newcases)
+
 xpredict = np.array(list(range(0,days)))
 ydata = np.array([8, 6, 23, 19, 31, 68, 40, 149, 117, 250, 270, 328, 388, 529, 599, 802, 959, 1511, 2884, 4978, 4862, 7347, 7285, 10075, 10008, 14693, 16437, 17620, 20395, 18207, 22291])
 ydataTotal = np.array([24, 30, 53, 72, 103, 171, 211, 360, 477, 727, 997, 1325, 1713, 2242, 2841, 3643, 4602, 6113, 8997, 13975, 18837, 26184, 33469, 43544, 53552, 68245, 84682, 102302, 122697, 140904, 163195])
