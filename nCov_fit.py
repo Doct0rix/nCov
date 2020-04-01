@@ -28,13 +28,61 @@ new = f.readline()
 newcases = [int(x) for x in new.split(",")]
 total = f.readline()
 totalcases = [int(x) for x in total.split(",")]
+date = f.readline()
+year, month, day = [int(x) for x in date.split(" ")]
 f.close()
 
-print(newcases)
+#print(newcases)
+
+ydata = np.array(newcases)
+ydataTotal = np.array(totalcases)
+
+lastdate = datetime.datetime(year, month, day).date()
+
+if total_cases > totalcases[-1]:
+  if datetime.datetime.now().date() > lastdate:
+    ydataTotal = np.append(ydataTotal, total_cases)
+    ydata = np.append(ydata, total_cases - totalcases[-1])
+  else:
+    totalcases[-1] = total_cases
+    newcases[-1] = totalcases[-1] - totalcases[-2]
+    ydata = np.array(newcases)
+    ydataTotal = np.array(totalcases)
+
+f = open("cases.data", "w")
+total_string = np.array2string(ydata, separator=' ', max_line_width=-1)
+for x in ydata:
+  f.write(str(x))
+  if x != ydata[len(ydata) - 1]:
+    f.write(",")
+
+f.write("\n")
+
+for x in ydataTotal:
+  f.write(str(x))
+  if x != ydataTotal[len(ydataTotal) - 1]:
+    f.write(",")
+
+f.write("\n")
+
+currentdate = datetime.datetime.now()
+f.write(currentdate.strftime("%Y %m %d"))
+
+f.close()
+
+#if datetime.datetime.now().date() > lastdate:
+#  if total_cases > totalcases[-1]:
+#    ydataTotal = np.append(ydataTotal, total_cases)
+#    ydata = np.append(ydata, total_cases - totalcases[-1])
+#elif total_cases > totalcases[-1]:
+#  totalcases[-1] = total_cases
+#  newcases[-1] = total_cases[-1] - total_cases[-2]
+#  ydata = np.array(newcases)
+#  ydataTotal = np.array(totalcases)
 
 xpredict = np.array(list(range(0,days)))
-ydata = np.array([8, 6, 23, 19, 31, 68, 40, 149, 117, 250, 270, 328, 388, 529, 599, 802, 959, 1511, 2884, 4978, 4862, 7347, 7285, 10075, 10008, 14693, 16437, 17620, 20395, 18207, 22291])
-ydataTotal = np.array([24, 30, 53, 72, 103, 171, 211, 360, 477, 727, 997, 1325, 1713, 2242, 2841, 3643, 4602, 6113, 8997, 13975, 18837, 26184, 33469, 43544, 53552, 68245, 84682, 102302, 122697, 140904, 163195])
+#ydata = np.array([8, 6, 23, 19, 31, 68, 40, 149, 117, 250, 270, 328, 388, 529, 599, 802, 959, 1511, 2884, 4978, 4862, 7347, 7285, 10075, 10008, 14693, 16437, 17620, 20395, 18207, 22291])
+#ydataTotal = np.array([24, 30, 53, 72, 103, 171, 211, 360, 477, 727, 997, 1325, 1713, 2242, 2841, 3643, 4602, 6113, 8997, 13975, 18837, 26184, 33469, 43544, 53552, 68245, 84682, 102302, 122697, 140904, 163195])
 ydatalog = np.log(ydata)
 xdataTotal = np.array(list(range(0,len(ydataTotal))))
 xdata = np.array(list(range(0,len(ydata))))
