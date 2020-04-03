@@ -24,56 +24,74 @@ total_cases_web = tree.xpath("//*[@id='cdc-chart-1-data']")
 
 #total_cases_web[0] = total_cases_web[0].replace('Total cases: ', '')
 #total_cases_web[0] = total_cases_web[0].replace(',', '')
-total_cases = int(5)
 
-print(data['data']['columns'][1])
 
-f = open("cases.data", "r")
-new = f.readline()
-newcases = [int(x) for x in new.split(",")]
-total = f.readline()
-totalcases = [int(x) for x in total.split(",")]
-date = f.readline()
-year, month, day = [int(x) for x in date.split(" ")]
-f.close()
+#for range(1, len(data['data']['columns'][1])
+
+#f = open("cases.data", "r")
+#new = f.readline()
+#newcases = [int(x) for x in new.split(",")]
+#total = f.readline()
+#totalcases = [int(x) for x in total.split(",")]
+#date = f.readline()
+#year, month, day = [int(x) for x in date.split(" ")]
+#f.close()
 
 #print(newcases)
+
+totalcases = data['data']['columns'][1][38:]
+
+for i in range(0, len(totalcases)):
+  totalcases[i] = int(totalcases[i])
+
+print(totalcases)
+
+new = [1]
+for i in range(1, len(totalcases)):
+  new.append(totalcases[i] - totalcases[i-1])
+
+newcases = new
+
+print new
 
 ydata = np.array(newcases)
 ydataTotal = np.array(totalcases)
 
-lastdate = datetime.datetime(year, month, day).date()
+print(len(totalcases))
+print(len(ydataTotal))
 
-if total_cases > totalcases[-1]:
-  if datetime.datetime.now().date() > lastdate:
-    ydataTotal = np.append(ydataTotal, total_cases)
-    ydata = np.append(ydata, total_cases - totalcases[-1])
-  else:
-    totalcases[-1] = total_cases
-    newcases[-1] = totalcases[-1] - totalcases[-2]
-    ydata = np.array(newcases)
-    ydataTotal = np.array(totalcases)
+#lastdate = datetime.datetime(year, month, day).date()
 
-f = open("cases.data", "w")
-total_string = np.array2string(ydata, separator=' ', max_line_width=-1)
-for x in ydata:
-  f.write(str(x))
-  if x != ydata[len(ydata) - 1]:
-    f.write(",")
+#if total_cases > totalcases[-1]:
+#  if datetime.datetime.now().date() > lastdate:
+#    ydataTotal = np.append(ydataTotal, total_cases)
+#    ydata = np.append(ydata, total_cases - totalcases[-1])
+#  else:
+#    totalcases[-1] = total_cases
+#    newcases[-1] = totalcases[-1] - totalcases[-2]
+#    ydata = np.array(newcases)
+#    ydataTotal = np.array(totalcases)
 
-f.write("\n")
+#f = open("cases.data", "w")
+#total_string = np.array2string(ydata, separator=' ', max_line_width=-1)
+#for x in ydata:
+#  f.write(str(x))
+#  if x != ydata[len(ydata) - 1]:
+#    f.write(",")
 
-for x in ydataTotal:
-  f.write(str(x))
-  if x != ydataTotal[len(ydataTotal) - 1]:
-    f.write(",")
+#f.write("\n")
 
-f.write("\n")
+#for x in ydataTotal:
+#  f.write(str(x))
+#  if x != ydataTotal[len(ydataTotal) - 1]:
+#    f.write(",")
 
-currentdate = datetime.datetime.now()
-f.write(currentdate.strftime("%Y %m %d"))
+#f.write("\n")
 
-f.close()
+#currentdate = datetime.datetime.now()
+#f.write(currentdate.strftime("%Y %m %d"))
+
+#f.close()
 
 #if datetime.datetime.now().date() > lastdate:
 #  if total_cases > totalcases[-1]:
