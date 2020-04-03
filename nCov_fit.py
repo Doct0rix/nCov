@@ -15,13 +15,18 @@ def func(x, a, b, c):
 	 #return np.array(a) * np.exp(np.array(b) * x) + np.array(c)
 	 return a * x**2 + b * x + c
 
-page = requests.get('https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/cases-in-us.html')
+page = requests.get('https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/total-cases-onset.json')
 tree = html.fromstring(page.content)
+data = page.json()
 
-total_cases_web = tree.xpath("//text()[contains(.,'Total cases:')]")
-total_cases_web[0] = total_cases_web[0].replace('Total cases: ', '')
-total_cases_web[0] = total_cases_web[0].replace(',', '')
-total_cases = int(total_cases_web[0])
+
+total_cases_web = tree.xpath("//*[@id='cdc-chart-1-data']")
+
+#total_cases_web[0] = total_cases_web[0].replace('Total cases: ', '')
+#total_cases_web[0] = total_cases_web[0].replace(',', '')
+total_cases = int(5)
+
+print(data['data']['columns'][1])
 
 f = open("cases.data", "r")
 new = f.readline()
