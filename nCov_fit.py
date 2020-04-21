@@ -48,9 +48,15 @@ print(totalcases)
 
 new = [1]
 for i in range(1, len(totalcases)):
-  new.append(totalcases[i] - totalcases[i-1])
+  case = totalcases[i] - totalcases[i-1]
+  if case == 0: 
+    totalcases = totalcases[:-1]
+    continue
+  new.append(case)
 
 newcases = new
+
+print(newcases)
 
 
 ydata = np.array(newcases)
