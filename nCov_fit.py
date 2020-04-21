@@ -15,7 +15,7 @@ def func(x, a, b, c):
 	 #return np.array(a) * np.exp(np.array(b) * x) + np.array(c)
 	 return a * x**2 + b * x + c
 
-page = requests.get('https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/total-cases-onset.json')
+page = requests.get('https://www.cdc.gov/coronavirus/2019-ncov/json/cumm-total-chart-data.json')
 tree = html.fromstring(page.content)
 data = page.json()
 
@@ -39,7 +39,7 @@ total_cases_web = tree.xpath("//*[@id='cdc-chart-1-data']")
 
 #print(newcases)
 
-totalcases = data['data']['columns'][1][38:]
+totalcases = data[1][38:]
 
 for i in range(0, len(totalcases)):
   totalcases[i] = int(totalcases[i])
@@ -52,7 +52,6 @@ for i in range(1, len(totalcases)):
 
 newcases = new
 
-print new
 
 ydata = np.array(newcases)
 ydataTotal = np.array(totalcases)
@@ -144,18 +143,22 @@ print(deathrate * np.amax(totalCases))
 #plotting
 plt.figure()
 #total
-plt.subplot(211)
+plt.subplot(311)
 plt.plot(xpredict, totalCases)
 plt.plot(xdataTotal, ydataTotal)
 plt.xlabel('')
 plt.ylabel('Total Infected')
 #new
-plt.subplot(212)
+plt.subplot(312)
 plt.plot(xpredict, predictfit, 'r-', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(params))
 plt.plot(xdata, ydatalog, 'b-', label='data')
 plt.xlabel('day')
 plt.ylabel('ln(New Cases)')
 plt.legend()
+#gradient
+plt.subplot(313)
+plt.plot(range(0,150), np.gradient(ydatapredict))
+print(np.gradient(ydatapredict))
 plt.show()
 
 # plt.plot(xpredict, totalCaseshigh)
