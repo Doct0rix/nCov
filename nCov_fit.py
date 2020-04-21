@@ -149,22 +149,19 @@ print(deathrate * np.amax(totalCases))
 #plotting
 plt.figure()
 #total
-plt.subplot(311)
+plt.subplot(211)
 plt.plot(xpredict, totalCases)
 plt.plot(xdataTotal, ydataTotal)
 plt.xlabel('')
 plt.ylabel('Total Infected')
 #new
-plt.subplot(312)
+plt.subplot(212)
 plt.plot(xpredict, predictfit, 'r-', label='fit: a=%5.3f, b=%5.3f, c=%5.3f' % tuple(params))
 plt.plot(xdata, ydatalog, 'b-', label='data')
 plt.xlabel('day')
 plt.ylabel('ln(New Cases)')
 plt.legend()
-#gradient
-plt.subplot(313)
-plt.plot(range(0,150), np.gradient(ydatapredict))
-print(np.gradient(ydatapredict))
+
 plt.show()
 
 # plt.plot(xpredict, totalCaseshigh)
