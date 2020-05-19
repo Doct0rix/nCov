@@ -15,7 +15,7 @@ def func(x, a, b, c):
 	 #return np.array(a) * np.exp(np.array(b) * x) + np.array(c)
 	 return a * x**2 + b * x + c
 
-page = requests.get('https://www.cdc.gov/coronavirus/2019-ncov/json/cumm-total-chart-data.json')
+page = requests.get('https://www.cdc.gov/coronavirus/2019-ncov/cases-updates/total-cases-onset.json')
 tree = html.fromstring(page.content)
 data = page.json()
 
@@ -39,7 +39,7 @@ total_cases_web = tree.xpath("//*[@id='cdc-chart-1-data']")
 
 #print(newcases)
 
-totalcases = data[1][38:]
+totalcases = data['data']['columns'][1][38:]
 
 for i in range(0, len(totalcases)):
   totalcases[i] = int(totalcases[i])
